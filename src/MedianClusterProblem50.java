@@ -6,9 +6,9 @@ import java.util.List;
 /**
  * Created by Pati on 16.12.2017.
  */
-public class MedianClusterProblemv2 {
+public class MedianClusterProblem50 {
 
-    CreateGraph createGraph = new CreateGraph("/Users/Pati/Downloads/iris2.dat");
+    CreateGraph50 createGraph = new CreateGraph50("/Users/Pati/Downloads/iris.dat");
 
     private double[][] initialGraph;
     private double[][] mst;
@@ -22,7 +22,7 @@ public class MedianClusterProblemv2 {
 
     public static void main(String[] args) {
 
-        MedianClusterProblemv2 mc = new MedianClusterProblemv2();
+        MedianClusterProblem50 mc = new MedianClusterProblem50();
         mc.solveMedianClusterProblem();
 
     }
@@ -118,41 +118,9 @@ public class MedianClusterProblemv2 {
         System.out.println("Centroid of cluster2: " + CentrVertex2 +
                 " with a sum of distances to it: " + min2);
 
-        List<Integer> cluster3vertices = new ArrayList<>();
-        List<Double> cluster3distances = new ArrayList<>();
-        for (int i : cluster2) {
-            double distance = 0;
-            cluster3vertices.add(i);
-            for (int j : cluster3) {
-                distance += initialGraph[i][j];
-            }
-            cluster3distances.add(distance);
-        }
-
-        double min3 = Double.POSITIVE_INFINITY;
-        int CentrVertex3 = 0;
-        for (int i = 0; i < cluster3distances.size(); i++) {
-            double d = cluster3distances.get(i);
-            if (d < min3) {
-                min3 = d;
-                CentrVertex3 = cluster3vertices.get(i);
-            }
-        }
-        System.out.println("Centroid of cluster3: " + CentrVertex3 +
-                " with a sum of distances to it: " + min3);
 
         //objective function
-        System.out.println("Objective value: " + (min1 + min2 + min3));
-        System.out.println(sumOfWeights);
-//        System.out.println(Arrays.deepToString(mst));
-//        for (int i=0; i<m; i++)
-//            {
-//                for (int j=0;j<m;j++)
-//            {
-//                System.out.print( mst[i][j]+" ");
-//            }
-//            System.out.println();
-//            }
+        System.out.println("Objective value: " + (min1 + min2));
 
     }
 
@@ -184,7 +152,7 @@ public class MedianClusterProblemv2 {
                 for (int j = 0; j < m; j++) {
                     if (unvisited.contains(j)) {
                         double weight = initialGraph[i][j];
-                        if (weight <= min) {
+                        if (weight < min) {
                             min = weight;
                             startVertex = i;
                             vertexTo = j;
@@ -239,13 +207,13 @@ public class MedianClusterProblemv2 {
 
 }
 
-class CreateGraph {
+class CreateGraph50 {
 
     private Scanner sc;
 
     // not really needed to solve the problem but in case...
-//    private List<String> pointNames = new ArrayList<>();
-//    private List<List<Double>> points = new ArrayList<>();
+    private List<String> pointNames = new ArrayList<>();
+    private List<List<Double>> points = new ArrayList<>();
 
     public double[][] getDMatrix() {
         return DMatrix;
@@ -256,7 +224,7 @@ class CreateGraph {
     int m;
     int n;
 
-    public CreateGraph(String filePath) {
+    public CreateGraph50(String filePath) {
         try {
             sc = new Scanner(new File(filePath));
         } catch (FileNotFoundException e) {
@@ -270,25 +238,21 @@ class CreateGraph {
 
 
     public void initialize() {
-        m = 150;
-       // n = 4;
+        m = 50;
+        n = 4;
 
-        for (int i =0; i< m; i++){
-            sc.next();
+        for (int i = 0; i < m; i++) {
+
+            String pointName = sc.next().substring(3);
+            pointNames.add(pointName);
+            List<Double> pointVars = new ArrayList<>();
+            for (int j = 0; j < n; j++) {
+
+                Double pointVar = sc.nextDouble();
+                pointVars.add(pointVar);
+            }
+            points.add(pointVars);
         }
-
-//        for (int i = 0; i < m; i++) {
-//
-//            String pointName = sc.next().substring(3);
-//            pointNames.add(pointName);
-//            List<Double> pointVars = new ArrayList<>();
-//            for (int j = 0; j < n; j++) {
-//
-//                Double pointVar = sc.nextDouble();
-//                pointVars.add(pointVar);
-//            }
-//            points.add(pointVars);
-//        }
         DMatrix = new double[m][m];
 
         for (int i = 0; i < m; i++) {
